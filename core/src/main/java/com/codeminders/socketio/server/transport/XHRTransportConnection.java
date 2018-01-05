@@ -17,6 +17,7 @@ import java.io.OutputStream;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,7 +97,7 @@ public class XHRTransportConnection extends AbstractTransportConnection
             {
 
                 OutputStream os = response.getOutputStream();
-                for (EngineIOPacket packet = packets.take(); packet != null; packet = packets.poll())
+                for (EngineIOPacket packet = packets.poll(3, TimeUnit.MINUTES); packet != null; packet = packets.poll())
                 {
                     if(done)
                         break;
