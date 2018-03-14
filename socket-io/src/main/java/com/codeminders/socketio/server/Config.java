@@ -36,11 +36,15 @@ public interface Config
     String BUFFER_SIZE = "bufferSize";
     String MAX_IDLE    = "maxIdleTime";
 
+    String WEBSOCKET_SEND_SYNCHRONIZED = "websocketSendSynchronized";
+
     int DEFAULT_BUFFER_SIZE = 8192;
     int DEFAULT_MAX_IDLE    = 300 * 1000;
 
     int DEFAULT_PING_INTERVAL = 25 * 1000; // 25s
     int DEFAULT_PING_TIMEOUT  = 60 * 1000; // 60s
+
+    boolean DEFAULT_WEBSOCKET_SEND_SYNCHRONIZED = false;
 
     long getPingInterval(long def);
 
@@ -61,4 +65,6 @@ public interface Config
     boolean getBoolean(String key, boolean def);
 
     String getNamespace();
+
+    boolean isWebsocketSendSynchronized();
 }

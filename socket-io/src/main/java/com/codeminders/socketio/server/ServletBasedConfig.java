@@ -109,4 +109,9 @@ public final class ServletBasedConfig implements Config
         return v == null ? def : v;
     }
 
+    @Override
+    public boolean isWebsocketSendSynchronized()
+    {
+        return getBoolean(Config.WEBSOCKET_SEND_SYNCHRONIZED, Config.DEFAULT_WEBSOCKET_SEND_SYNCHRONIZED);
+    }
 }

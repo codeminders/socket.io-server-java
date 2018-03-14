@@ -59,6 +59,10 @@ public final class WebsocketTransportConnection extends AbstractTransportConnect
 
     private javax.websocket.Session remote_endpoint;
 
+    private final Object sendLock = new Object();
+
+    private boolean sendSynchronized;
+
     public WebsocketTransportConnection() {
         super(WebsocketTransportProvider.websocket);
     }
@@ -72,6 +76,7 @@ public final class WebsocketTransportConnection extends AbstractTransportConnect
     protected void init()
     {
         getSession().setTimeout(getConfig().getTimeout(Config.DEFAULT_PING_TIMEOUT));
+        sendSynchronized = getConfig().isWebsocketSendSynchronized();
 
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine(getConfig().getNamespace() + " WebSocket configuration:" +
@@ -222,9 +227,21 @@ public final class WebsocketTransportConnection extends AbstractTransportConnect
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.log(Level.FINE, "Session[" + getSession().getSessionId() + "]: send text: " + data);
 
+        RemoteEndpoint.Basic basicRemote = remote_endpoint.getBasicRemote();
+
         try
         {
-            remote_endpoint.getBasicRemote().sendText(data);
+           if (sendSynchronized)
+           {
+              synchronized (sendLock)
+              {
+                 basicRemote.sendText(data);
+              }
+           }
+           else
+           {
+              basicRemote.sendText(data);
+           }
         }
         catch (IOException e)
         {
@@ -240,9 +257,21 @@ public final class WebsocketTransportConnection extends AbstractTransportConnect
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.log(Level.FINE, "Session[" + getSession().getSessionId() + "]: send binary");
 
-        try
+       RemoteEndpoint.Basic basicRemote = remote_endpoint.getBasicRemote();
+
+       try
         {
-            remote_endpoint.getBasicRemote().sendBinary(ByteBuffer.wrap(data));
+           if (sendSynchronized)
+           {
+              synchronized (sendLock)
+              {
+                 basicRemote.sendBinary(ByteBuffer.wrap(data));
+              }
+           }
+           else
+           {
+              basicRemote.sendBinary(ByteBuffer.wrap(data));
+           }
         }
         catch (IOException e)
         {
