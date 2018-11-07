@@ -23,6 +23,7 @@
 package com.codeminders.socketio.protocol;
 
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * @author Alexander Sova (bird@codeminders.com)
@@ -104,5 +105,31 @@ public class EngineIOPacket
     public EngineIOPacket(Type type)
     {
         this(type, "");
+    }
+
+    @Override
+    public String toString()
+    {
+        return "EngineIOPacket{" +
+                "type=" + type +
+                ", textData='" + textData + '\'' +
+                ", binaryData=" + binaryData +
+                '}';
+    }
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EngineIOPacket that = (EngineIOPacket) o;
+        return type == that.type &&
+                Objects.equals(textData, that.textData) &&
+                Objects.equals(binaryData, that.binaryData);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(type, textData, binaryData);
     }
 }

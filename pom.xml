@@ -61,6 +61,14 @@
                 <role>contributor</role>
             </roles>
         </contributor>
+        <contributor>
+            <name>SQReder</name>
+            <email>sqreder@gmail.com</email>
+            <timezone>+3</timezone>
+            <roles>
+                <role>contributor</role>
+            </roles>
+        </contributor>
     </contributors>
 
     <licenses>
