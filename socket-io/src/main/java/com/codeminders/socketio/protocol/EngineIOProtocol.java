@@ -215,9 +215,8 @@ public final class EngineIOProtocol
         {
             int len = decodePacketLength(payload, pos);
             EngineIOPacket.Type type = decodePacketType(payload, pos);
-            int prefixLength = Integer.toString(len).length() + 2;
-            String data = payload.substring(pos.getIndex() - prefixLength, pos.getIndex() + len - 1);
-            pos.setIndex(pos.getIndex() + 1 + len - 2);
+            String data = payload.substring(pos.getIndex(), pos.getIndex() + len-1 );
+            pos.setIndex(pos.getIndex() + 1 + len);
 
             switch (type)
             {
