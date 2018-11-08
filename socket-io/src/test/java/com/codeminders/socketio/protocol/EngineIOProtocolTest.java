@@ -1,16 +1,16 @@
 package com.codeminders.socketio.protocol;
 
 import com.codeminders.socketio.server.SocketIOProtocolException;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EngineIOProtocolTest {
+public class EngineIOProtocolTest {
     @Test
-    void decodeMultiPayload()
+    public void decodeMultiPayload()
             throws SocketIOProtocolException, StringIndexOutOfBoundsException
     {
         String payload = "10:40/stream,1:227:42/stream,[\"SET_STREAM_ID\"]1:1";
@@ -25,7 +25,7 @@ class EngineIOProtocolTest {
     }
 
     @Test
-    void decodeSimplePayload()
+    public void decodeSimplePayload()
             throws SocketIOProtocolException
     {
         String payload = "10:40/stream,";
