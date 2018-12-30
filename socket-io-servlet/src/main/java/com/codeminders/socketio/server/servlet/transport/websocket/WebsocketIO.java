@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.codeminders.socketio.server.transport.websocket;
+package com.codeminders.socketio.server.servlet.transport.websocket;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

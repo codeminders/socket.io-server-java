@@ -23,7 +23,7 @@
 package com.codeminders.socketio.sample.jetty;
 
 import com.codeminders.socketio.sample.chat.ChatSocketServlet;
-import com.codeminders.socketio.server.transport.websocket.WebsocketTransportConnection;
+import com.codeminders.socketio.server.servlet.transport.websocket.WebsocketTransportConnection;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;

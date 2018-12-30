@@ -22,10 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.codeminders.socketio.server;
+package com.codeminders.socketio.server.servlet;
+
+import com.codeminders.socketio.server.Config;
 
 import javax.servlet.ServletConfig;
-import java.util.logging.Logger;
 
 /**
  * @author Mathieu Carbou

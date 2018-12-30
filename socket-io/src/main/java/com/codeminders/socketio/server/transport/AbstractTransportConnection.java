@@ -29,9 +29,14 @@ import com.codeminders.socketio.common.DisconnectReason;
 import com.codeminders.socketio.common.SocketIOException;
 import com.codeminders.socketio.protocol.SocketIOPacket;
 import com.codeminders.socketio.protocol.SocketIOProtocol;
-import com.codeminders.socketio.server.*;
+import com.codeminders.socketio.server.ACKListener;
+import com.codeminders.socketio.server.Config;
+import com.codeminders.socketio.server.HttpRequest;
+import com.codeminders.socketio.server.Session;
+import com.codeminders.socketio.server.SocketIOClosedException;
+import com.codeminders.socketio.server.Transport;
+import com.codeminders.socketio.server.TransportConnection;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -46,7 +51,7 @@ public abstract class AbstractTransportConnection implements TransportConnection
     private Config  config;
     private Session session;
     private Transport transport;
-    private HttpServletRequest request;
+    private HttpRequest request;
 
     public AbstractTransportConnection(Transport transport)
     {
@@ -126,12 +131,12 @@ public abstract class AbstractTransportConnection implements TransportConnection
     }
 
     @Override
-    public HttpServletRequest getRequest()
+    public HttpRequest getRequest()
     {
         return request;
     }
 
-    public void setRequest(HttpServletRequest request)
+    public void setRequest(HttpRequest request)
     {
         this.request = request;
     }

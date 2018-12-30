@@ -25,7 +25,7 @@ package com.codeminders.socketio.sample.chat;
 import com.codeminders.socketio.common.DisconnectReason;
 import com.codeminders.socketio.common.SocketIOException;
 import com.codeminders.socketio.server.*;
-import com.codeminders.socketio.server.transport.websocket.WebsocketIOServlet;
+import com.codeminders.socketio.server.servlet.transport.websocket.WebsocketIOServlet;
 import com.google.common.io.ByteStreams;
 
 import javax.servlet.ServletConfig;

@@ -1,6 +1,6 @@
 /**
  * The MIT License
- * Copyright (c) 2018 Alex Saveliev (lyolik@codeminders.com)
+ * Copyright (c) 2015 Alexander Sova (bird@codeminders.com)
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,28 +20,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.codeminders.socketio.server.transport.websocket;
+package com.codeminders.socketio.server.servlet.transport;
 
-import java.io.IOException;
+import com.codeminders.socketio.server.Config;
+import com.codeminders.socketio.server.servlet.ServletBasedConfig;
+import com.codeminders.socketio.server.transport.AbstractTransport;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 
 /**
- * @author Alex Saveliev (lyolik@codeminders.com)
+ * @author Alexander Sova (bird@codeminders.com)
+ * @author Mathieu Carbou
  */
-public class SynchronizedWebsocketIO extends WebsocketIO {
+public abstract class AbstractServletTransport extends AbstractTransport
+{
+    private final ServletConfig servletConfig;
+    private final ServletContext servletContext;
 
-    public SynchronizedWebsocketIO(javax.websocket.Session remoteEndpoint) {
-        super(remoteEndpoint);
+    private Config config;
+
+    protected AbstractServletTransport(ServletConfig servletConfig, ServletContext servletContext) {
+        this.servletConfig = servletConfig;
+        this.servletContext = servletContext;
     }
 
-    public synchronized void sendString(String data) throws IOException {
-        super.sendString(data);
+    @Override
+    public void destroy()
+    {
     }
 
-    public synchronized void sendBinary(byte[] data) throws IOException {
-        super.sendBinary(data);
+    @Override
+    public void init()
+    {
+        this.config = new ServletBasedConfig(this.servletConfig, getType().toString());
     }
 
-    public void disconnect() throws IOException {
-        remoteEndpoint.close();
+    @Override
+    protected Config getConfig()
+    {
+        return this.config;
     }
 }

@@ -22,29 +22,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.codeminders.socketio.server.transport;
+package com.codeminders.socketio.server.servlet.transport;
 
 import com.codeminders.socketio.common.ConnectionState;
 import com.codeminders.socketio.protocol.EngineIOProtocol;
-import com.codeminders.socketio.server.*;
+import com.codeminders.socketio.server.Config;
+import com.codeminders.socketio.server.HttpRequest;
+import com.codeminders.socketio.server.HttpResponse;
+import com.codeminders.socketio.server.Session;
+import com.codeminders.socketio.server.SocketIOManager;
+import com.codeminders.socketio.server.TransportConnection;
+import com.codeminders.socketio.server.TransportType;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class AbstractHttpTransport extends AbstractTransport
+public abstract class AbstractHttpTransport extends AbstractServletTransport
 {
     private static final Logger LOGGER = Logger.getLogger(AbstractHttpTransport.class.getName());
 
+    public AbstractHttpTransport(ServletConfig servletConfig, ServletContext servletContext) {
+        super(servletConfig, servletContext);
+    }
+
     @Override
-    public void handle(HttpServletRequest request,
-                             HttpServletResponse response,
-                             SocketIOManager socketIOManager)
+    public void handle(HttpRequest request,
+                       HttpResponse response,
+                       SocketIOManager socketIOManager)
             throws IOException
     {
         if (LOGGER.isLoggable(Level.FINE))

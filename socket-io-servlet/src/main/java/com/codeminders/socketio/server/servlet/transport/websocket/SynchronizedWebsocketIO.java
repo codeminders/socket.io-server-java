@@ -1,6 +1,6 @@
 /**
  * The MIT License
- * Copyright (c) 2015 Alexander Sova (bird@codeminders.com)
+ * Copyright (c) 2018 Alex Saveliev (lyolik@codeminders.com)
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,22 +20,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.codeminders.socketio.server.transport.websocket;
+package com.codeminders.socketio.server.servlet.transport.websocket;
 
-import javax.websocket.HandshakeResponse;
-import javax.websocket.server.HandshakeRequest;
-import javax.websocket.server.ServerEndpointConfig;
+import java.io.IOException;
 
 /**
- * Adds handshake request information to user properties
+ * @author Alex Saveliev (lyolik@codeminders.com)
  */
-public class WebsocketConfigurator extends ServerEndpointConfig.Configurator
-{
-    @Override
-    public void modifyHandshake(ServerEndpointConfig config,
-                                HandshakeRequest request,
-                                HandshakeResponse response)
-    {
-        config.getUserProperties().put(HandshakeRequest.class.getName(), request);
+public class SynchronizedWebsocketIO extends WebsocketIO {
+
+    public SynchronizedWebsocketIO(javax.websocket.Session remoteEndpoint) {
+        super(remoteEndpoint);
+    }
+
+    public synchronized void sendString(String data) throws IOException {
+        super.sendString(data);
+    }
+
+    public synchronized void sendBinary(byte[] data) throws IOException {
+        super.sendBinary(data);
+    }
+
+    public void disconnect() throws IOException {
+        remoteEndpoint.close();
     }
 }

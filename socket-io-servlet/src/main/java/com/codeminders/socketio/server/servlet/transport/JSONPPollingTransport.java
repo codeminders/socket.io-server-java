@@ -23,23 +23,28 @@
  * THE SOFTWARE.
  *
  */
-package com.codeminders.socketio.server.transport;
+package com.codeminders.socketio.server.servlet.transport;
 
 import com.codeminders.socketio.protocol.EngineIOProtocol;
-import com.codeminders.socketio.server.SocketIOProtocolException;
+import com.codeminders.socketio.server.HttpRequest;
+import com.codeminders.socketio.server.HttpResponse;
 import com.codeminders.socketio.server.Session;
+import com.codeminders.socketio.server.SocketIOProtocolException;
 import com.codeminders.socketio.server.TransportType;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public abstract class JSONPPollingTransport extends AbstractHttpTransport
 {
     private static final String EIO_PREFIX = "___eio";
     private static final String FRAME_ID   = JSONPPollingTransport.class.getName() + ".FRAME_ID";
 
-    protected JSONPPollingTransport() { }
+    protected JSONPPollingTransport(ServletConfig servletConfig, ServletContext servletContext) {
+        super(servletConfig, servletContext);
+    }
 
     @Override
     public TransportType getType()
@@ -47,25 +52,27 @@ public abstract class JSONPPollingTransport extends AbstractHttpTransport
         return TransportType.JSONP_POLLING;
     }
 
-    public void startSend(Session session, ServletResponse response) throws IOException
+    public void startSend(Session session, HttpResponse response) throws IOException
     {
         response.setContentType("text/javascript; charset=UTF-8");
     }
 
-    public void writeData(Session session, ServletResponse response, String data) throws IOException
+    public void writeData(Session session, HttpResponse response, String data) throws IOException
     {
-        response.getOutputStream().print(EIO_PREFIX);
-        response.getOutputStream().print("[" + session.getAttribute(FRAME_ID) + "]('");
-        response.getOutputStream().print(data); //TODO: encode data?
-        response.getOutputStream().print("');");
+        StringBuilder sb = new StringBuilder()
+                .append(EIO_PREFIX)
+                .append("[").append(session.getAttribute(FRAME_ID)).append("]('")
+                .append(data)
+                .append("');");
+        response.getOutputStream().write(sb.toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    public void finishSend(Session session, ServletResponse response) throws IOException
+    public void finishSend(Session session, HttpResponse response) throws IOException
     {
         response.flushBuffer();
     }
 
-    public void onConnect(Session session, ServletRequest request, ServletResponse response)
+    public void onConnect(Session session, HttpRequest request, HttpResponse response)
             throws IOException
     {
         try {

@@ -20,31 +20,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.codeminders.socketio.server.transport.websocket;
+package com.codeminders.socketio.server.servlet.transport.websocket;
+
+import com.codeminders.socketio.server.Transport;
+import com.codeminders.socketio.server.servlet.transport.AbstractServletTransportProvider;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 
 /**
- * @author Alex Saveliev (lyolik@codeminders.com)
+ * @author Alexander Sova (bird@codeminders.com)
  */
-public final class ServletConfigHolder
+public class WebsocketTransportProvider extends AbstractServletTransportProvider
 {
-    private ServletConfig config;
+    private final Transport websocket;
 
-    private static ServletConfigHolder instance = new ServletConfigHolder();
-
-    private ServletConfigHolder() {
+    public WebsocketTransportProvider(ServletConfig servletConfig, ServletContext servletContext) {
+        super(servletConfig, servletContext);
+        this.websocket = new WebsocketTransport(servletConfig, servletContext);
     }
 
-    public static ServletConfigHolder getInstance() {
-        return instance;
+    @Override
+    protected Transport createWebSocketTransport()
+    {
+        return websocket;
     }
 
-    public void setConfig(ServletConfig config) {
-        this.config = config;
-    }
-
-    public ServletConfig getConfig() {
-        return this.config;
-    }
 }

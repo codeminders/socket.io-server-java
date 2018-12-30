@@ -6,7 +6,7 @@
 
     <groupId>com.codeminders.socketio</groupId>
     <artifactId>socketio-parent</artifactId>
-    <version>1.0.9</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Socket.IO Java Server</name>
@@ -15,7 +15,7 @@
     <inceptionYear>2010</inceptionYear>
 
     <properties>
-        <jdk.version>1.7</jdk.version>
+        <jdk.version>1.8</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -69,6 +69,14 @@
                 <role>contributor</role>
             </roles>
         </contributor>
+        <contributor>
+            <name>Brian Tarricone</name>
+            <email>brian@tarricone.org</email>
+            <timezone>-8</timezone>
+            <roles>
+                <role>contributor</role>
+            </roles>
+        </contributor>
     </contributors>
 
     <licenses>
@@ -92,7 +100,9 @@
 
     <modules>
         <module>socket-io</module>
+        <module>socket-io-servlet</module>
         <module>samples</module>
+        <module>socket-io-akka-http-scala</module>
     </modules>
 
     <distributionManagement>
@@ -140,8 +150,6 @@
                     <version>2.3.2</version>
                     <configuration>
                         <encoding>UTF-8</encoding>
-                        <source>1.6</source>
-                        <target>1.6</target>
                         <source>${jdk.version}</source>
                         <target>${jdk.version}</target>
                     </configuration>
@@ -277,13 +285,24 @@
         </plugins>
     </reporting>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.websocket</groupId>
+                <artifactId>javax.websocket-api</artifactId>
+                <version>1.1</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>

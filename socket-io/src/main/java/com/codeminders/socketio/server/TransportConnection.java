@@ -29,8 +29,6 @@ import com.codeminders.socketio.common.SocketIOException;
 import com.codeminders.socketio.protocol.EngineIOPacket;
 import com.codeminders.socketio.protocol.SocketIOPacket;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -44,7 +42,7 @@ public interface TransportConnection
     Session getSession();
     Transport getTransport();
 
-    void handle(HttpServletRequest request, HttpServletResponse response)
+    void handle(HttpRequest request, HttpResponse response)
             throws IOException;
 
     /**
@@ -72,5 +70,5 @@ public interface TransportConnection
     /**
      * @return current HTTP request, null if connection is disconnected
      */
-    HttpServletRequest getRequest();
+    HttpRequest getRequest();
 }

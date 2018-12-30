@@ -1,7 +1,8 @@
-Java backend for `Socket.IO` library (http://socket.io/)
+Java/Scala backend for `Socket.IO` library (http://socket.io/)
 
 Supports `Socket.IO` clients version 1.0+
-Requires JSR 356-compatible server (tested with Jetty 9 and Tomcat 8)
+
+There is currently support for JSR 356-compatible servlet containers (tested with Jetty 9 and Tomcat 8) and Akka-HTTP.
 
 Right now only websocket and XHR polling transports are implemented.
 
@@ -41,3 +42,21 @@ When Jetty server is embedded into your application, but websocket endpoint is e
                 });
 ```
 See example in [com.codeminders.socketio.sample.jetty.ChatServer](https://github.com/codeminders/socket.io-server-java/blob/master/samples/jetty/src/main/java/com/codeminders/socketio/sample/jetty/ChatServer.java)
+
+## Akka-HTTP usage
+
+The akka-http support revolves around a single exposed class, `SocketIOAkkaHttp`.
+
+```scala
+        val socketIO = SocketIOAkkaHttp().fold(sys.error, identity)
+
+        val routes: Route = {
+            pathPrefix("socket.io") {
+                socketIO.route
+            }
+        }
+
+        Http().bindAndHandle(routes, "localhost", 8080)
+```
+
+The socket URL can be changed by moving the `.route` call to another area in your routes hierarchy.  To configure limits and timeouts, an optional `SocketIOAkkaHttpSettings` instance can be passed to the `SocketIOAkkaHttp()` constructor.

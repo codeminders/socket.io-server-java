@@ -20,22 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.codeminders.socketio.server.transport.websocket;
+package com.codeminders.socketio.server.servlet.transport.websocket;
 
-import com.codeminders.socketio.server.Transport;
-import com.codeminders.socketio.server.transport.AbstractTransportProvider;
+import com.codeminders.socketio.common.SocketIOException;
+import com.codeminders.socketio.server.servlet.SocketIOServlet;
+import com.codeminders.socketio.server.TransportProvider;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 
 /**
  * @author Alexander Sova (bird@codeminders.com)
  */
-public class WebsocketTransportProvider extends AbstractTransportProvider
+public abstract class WebsocketIOServlet extends SocketIOServlet
 {
-    static final Transport websocket = new WebsocketTransport();
-
     @Override
-    protected Transport createWebSocketTransport()
+    public void init(ServletConfig config) throws ServletException
     {
-        return websocket;
+        super.init(config);
+        ServletConfigHolder.getInstance().setConfig(config);
+        try {
+            TransportProvider transportProvider = new WebsocketTransportProvider(config, getServletContext());
+            transportProvider.init();
+            setTransportProvider(transportProvider);
+        } catch (SocketIOException e) {
+            throw new ServletException("Failed to initialize Websocket transport provider: " + e.getMessage(), e);
+        }
     }
-
 }

@@ -22,10 +22,8 @@
  */
 package com.codeminders.socketio.server;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
+import com.codeminders.socketio.common.SocketIOException;
+
 import java.util.Collection;
 
 /**
@@ -38,24 +36,21 @@ public interface TransportProvider {
     /**
      * Creates all the transports
      *
-     * @param config servlet configuration
-     * @param context servlet context
-     * @throws ServletException if init failed
+     * @throws SocketIOException if init failed
      */
-    void init(ServletConfig config, ServletContext context)
-            throws ServletException;
+    void init() throws SocketIOException;
     void destroy();
 
     /**
      *   Finds appropriate Transport class based on the rules defined at
      *   https://github.com/socketio/engine.io-protocol#transports
      *
-     *   @param request incoming servlet request
+     *   @param request incoming HTTP request
      *   @return appropriate Transport object
      *   @throws UnsupportedTransportException no transport was found
      *   @throws SocketIOProtocolException invalid request was sent
      */
-    Transport getTransport(ServletRequest request)
+    Transport getTransport(HttpRequest request)
             throws UnsupportedTransportException, SocketIOProtocolException;
 
     Transport getTransport(TransportType type);

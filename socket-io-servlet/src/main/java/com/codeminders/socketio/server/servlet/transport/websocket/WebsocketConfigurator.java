@@ -20,26 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.codeminders.socketio.server.transport.websocket;
+package com.codeminders.socketio.server.servlet.transport.websocket;
 
-import com.codeminders.socketio.server.SocketIOServlet;
-import com.codeminders.socketio.server.TransportProvider;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
+import javax.websocket.HandshakeResponse;
+import javax.websocket.server.HandshakeRequest;
+import javax.websocket.server.ServerEndpointConfig;
 
 /**
- * @author Alexander Sova (bird@codeminders.com)
+ * Adds handshake request information to user properties
  */
-public abstract class WebsocketIOServlet extends SocketIOServlet
+public class WebsocketConfigurator extends ServerEndpointConfig.Configurator
 {
     @Override
-    public void init(ServletConfig config) throws ServletException
+    public void modifyHandshake(ServerEndpointConfig config,
+                                HandshakeRequest request,
+                                HandshakeResponse response)
     {
-        super.init(config);
-        ServletConfigHolder.getInstance().setConfig(config);
-        TransportProvider transportProvider = new WebsocketTransportProvider();
-        transportProvider.init(config, getServletContext());
-        setTransportProvider(transportProvider);
+        config.getUserProperties().put(HandshakeRequest.class.getName(), request);
     }
 }
