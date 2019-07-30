@@ -3,6 +3,9 @@ package com.codeminders.socketio.protocol;
 import com.codeminders.socketio.server.SocketIOProtocolException;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,5 +37,20 @@ public class EngineIOProtocolTest {
 
         List<EngineIOPacket> result = EngineIOProtocol.decodePayload(payload);
         assertThat(result).isEqualTo(expected);
+    }
+
+
+    @Test
+    public void binaryEncode_unicodeStrings()
+            throws IOException
+    {
+        final EngineIOPacket packet = new EngineIOPacket(EngineIOPacket.Type.MESSAGE, "Привет!");
+
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        EngineIOProtocol.binaryEncode(packet, baos);
+
+        List<EngineIOPacket> result = EngineIOProtocol.binaryDecodePayload(new ByteArrayInputStream(baos.toByteArray()));
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0)).isEqualTo(packet);
     }
 }
