@@ -85,10 +85,11 @@ public final class EngineIOProtocol
             assert(packet.getTextData() != null);
 
             os.write(0); // text packet
-            os.write(encodeLength(packet.getTextData().length() + 1)); // +1 for packet type
+            final byte[] bytes = packet.getTextData().getBytes("UTF-8");
+            os.write(encodeLength(bytes.length + 1)); // +1 for packet type
             os.write(255);
             os.write(packet.getType().value() + '0');
-            os.write(packet.getTextData().getBytes("UTF-8"));
+            os.write(bytes);
         }
 
     }
